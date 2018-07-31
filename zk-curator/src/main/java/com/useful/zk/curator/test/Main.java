@@ -10,7 +10,7 @@ import com.useful.zk.curator.zookeeper.ZookeeperRegistryCenter;
  */
 public class Main {
 
-    private static String rootNode = "CommonSimpleJob1OK";
+    private static String rootNode = "rootNode";
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -26,7 +26,7 @@ public class Main {
     }
 
     private static CoordinatorRegistryCenter createRegistryCenter() {
-        CoordinatorRegistryCenter regCenter = new ZookeeperRegistryCenter(new ZookeeperConfiguration("localhost:2181", "elastic-job-ns2"));
+        CoordinatorRegistryCenter regCenter = new ZookeeperRegistryCenter(new ZookeeperConfiguration("localhost:2181", "namespace"));
         regCenter.init();
         regCenter.addCacheData("/" + rootNode);
         return regCenter;
