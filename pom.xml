@@ -8,6 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>zk-curator</module>
+        <module>event-bus</module>
     </modules>
     <packaging>pom</packaging>
 
