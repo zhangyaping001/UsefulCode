@@ -15,14 +15,25 @@
  * </p>
  */
 
-package com.useful.zk.curator.listener.server;
+package com.useful.zk.curator.listener.node;
+
+import com.useful.zk.curator.base.CoordinatorRegistryCenter;
+import com.useful.zk.curator.listener.AbstractListenerManager;
 
 /**
- * 服务器状态.
- *
- * @author zhangliang
+ * 节点监听管理器.
  */
-public enum ServerStatus {
+public final class ZkNodeListenerManager extends AbstractListenerManager {
 
-    DISABLED
+
+    public ZkNodeListenerManager(final CoordinatorRegistryCenter regCenter, final String rootNode) {
+        super(regCenter, rootNode);
+    }
+
+    @Override
+    public void start() {
+        addDataListener(new ZkNodeListener());
+    }
+
+
 }

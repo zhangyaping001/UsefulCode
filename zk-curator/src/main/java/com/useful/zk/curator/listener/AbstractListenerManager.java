@@ -18,20 +18,18 @@
 package com.useful.zk.curator.listener;
 
 import com.useful.zk.curator.base.CoordinatorRegistryCenter;
-import com.useful.zk.curator.listener.storage.JobNodeStorage;
+import com.useful.zk.curator.listener.storage.ZkNodeStorage;
 import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 
 /**
- * 作业注册中心的监听器管理者的抽象类.
- *
- * @author zhangliang
+ * 注册中心的监听器管理者的抽象类.
  */
 public abstract class AbstractListenerManager {
 
-    private final JobNodeStorage jobNodeStorage;
+    private final ZkNodeStorage zkNodeStorage;
 
-    protected AbstractListenerManager(final CoordinatorRegistryCenter regCenter, final String jobName) {
-        jobNodeStorage = new JobNodeStorage(regCenter, jobName);
+    protected AbstractListenerManager(final CoordinatorRegistryCenter regCenter, final String rootNode) {
+        zkNodeStorage = new ZkNodeStorage(regCenter, rootNode);
     }
 
     /**
@@ -40,6 +38,6 @@ public abstract class AbstractListenerManager {
     public abstract void start();
 
     protected void addDataListener(final TreeCacheListener listener) {
-        jobNodeStorage.addDataListener(listener);
+        zkNodeStorage.addDataListener(listener);
     }
 }

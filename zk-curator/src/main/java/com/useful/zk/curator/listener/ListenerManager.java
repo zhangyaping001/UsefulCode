@@ -19,36 +19,32 @@ package com.useful.zk.curator.listener;
 
 
 import com.useful.zk.curator.base.CoordinatorRegistryCenter;
-import com.useful.zk.curator.listener.election.ElectionListenerManager;
-import com.useful.zk.curator.listener.storage.JobNodeStorage;
-
-import java.util.List;
+import com.useful.zk.curator.listener.connection.RegistryCenterConnectionStateListener;
+import com.useful.zk.curator.listener.node.ZkNodeListenerManager;
+import com.useful.zk.curator.listener.storage.ZkNodeStorage;
 
 /**
- * 作业注册中心的监听器管理者.
- *
- * @author zhangliang
+ * 注册中心的监听器管理者.
  */
 public final class ListenerManager {
 
-    private final JobNodeStorage jobNodeStorage;
+    private final ZkNodeStorage zkNodeStorage;
 
-    private final ElectionListenerManager electionListenerManager;
-
+    private final ZkNodeListenerManager demoListenerManager;
 
     private final RegistryCenterConnectionStateListener regCenterConnectionStateListener;
 
-    public ListenerManager(final CoordinatorRegistryCenter regCenter, final String jobName/*, final List<ElasticJobListener> elasticJobListeners*/) {
-        jobNodeStorage = new JobNodeStorage(regCenter, jobName);
-        electionListenerManager = new ElectionListenerManager(regCenter, jobName);
-        regCenterConnectionStateListener = new RegistryCenterConnectionStateListener(regCenter, jobName);
+    public ListenerManager(final CoordinatorRegistryCenter regCenter, final String rootNode) {
+        zkNodeStorage = new ZkNodeStorage(regCenter, rootNode);
+        demoListenerManager = new ZkNodeListenerManager(regCenter, rootNode);
+        regCenterConnectionStateListener = new RegistryCenterConnectionStateListener();
     }
 
     /**
      * 开启所有监听器.
      */
     public void startAllListeners() {
-        electionListenerManager.start();
-        jobNodeStorage.addConnectionStateListener(regCenterConnectionStateListener);
+        demoListenerManager.start();
+        zkNodeStorage.addConnectionStateListener(regCenterConnectionStateListener);
     }
 }

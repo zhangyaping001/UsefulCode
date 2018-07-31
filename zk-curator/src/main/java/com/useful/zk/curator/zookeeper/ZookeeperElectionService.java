@@ -27,9 +27,6 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * 使用{@link LeaderSelector}实现选举服务.
- *
- * @author gaohongtao
- * @author caohao
  */
 @Slf4j
 public final class ZookeeperElectionService {
@@ -43,14 +40,14 @@ public final class ZookeeperElectionService {
 
             @Override
             public void takeLeadership(final CuratorFramework client) throws Exception {
-                log.info("Elastic job: {} has leadership", identity);
+                log.info("{} has leadership", identity);
                 try {
                     electionCandidate.startLeadership();
                     leaderLatch.await();
-                    log.warn("Elastic job: {} lost leadership.", identity);
+                    log.warn("{} lost leadership.", identity);
                     electionCandidate.stopLeadership();
                 } catch (final Exception exception) {
-                    log.error("Elastic job: Starting error", exception);
+                    log.error("Starting error", exception);
                     System.exit(1);
                 }
             }
@@ -63,7 +60,7 @@ public final class ZookeeperElectionService {
      * 开始选举.
      */
     public void start() {
-        log.debug("Elastic job: {} start to elect leadership", leaderSelector.getId());
+        log.debug("start to elect leadership", leaderSelector.getId());
         leaderSelector.start();
     }
 
@@ -71,7 +68,7 @@ public final class ZookeeperElectionService {
      * 停止选举.
      */
     public void stop() {
-        log.info("Elastic job: stop leadership election");
+        log.info("stop leadership election");
         leaderLatch.countDown();
         try {
             leaderSelector.close();

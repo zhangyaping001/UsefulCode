@@ -19,8 +19,6 @@ package com.useful.zk.curator.exception;
 
 /**
  * 注册中心异常.
- *
- * @author zhangliang
  */
 public final class RegException extends RuntimeException {
 

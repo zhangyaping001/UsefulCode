@@ -19,8 +19,6 @@ package com.useful.zk.curator.base;
 
 /**
  * 注册中心.
- *
- * @author zhangliang
  */
 public interface RegistryCenter {
 

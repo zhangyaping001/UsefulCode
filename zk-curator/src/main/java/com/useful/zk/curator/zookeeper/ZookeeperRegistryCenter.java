@@ -44,8 +44,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 基于Zookeeper的注册中心.
- *
- * @author zhangliang
  */
 @Slf4j
 public final class ZookeeperRegistryCenter implements CoordinatorRegistryCenter {
@@ -64,7 +62,7 @@ public final class ZookeeperRegistryCenter implements CoordinatorRegistryCenter 
 
     @Override
     public void init() {
-        log.debug("Elastic job: zookeeper registry center init, server lists is: {}.", zkConfig.getServerLists());
+        log.debug("zookeeper registry center init, server lists is: {}.", zkConfig.getServerLists());
         CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
                 .connectString(zkConfig.getServerLists())
                 .retryPolicy(new ExponentialBackoffRetry(zkConfig.getBaseSleepTimeMilliseconds(), zkConfig.getMaxRetries(), zkConfig.getMaxSleepTimeMilliseconds()))

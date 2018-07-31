@@ -29,134 +29,130 @@ import org.apache.curator.framework.state.ConnectionStateListener;
 import java.util.List;
 
 /**
- * 作业节点数据访问类.
+ * 节点数据访问类.
  *
  * <p>
- * 作业节点是在普通的节点前加上作业名称的前缀.
+ * 节点是在普通的节点前加上名称的前缀.
  * </p>
  *
- * @author zhangliang
  */
-public final class JobNodeStorage {
+public final class ZkNodeStorage {
 
     private final CoordinatorRegistryCenter regCenter;
 
-    private final String jobName;
+    private final String rootNode;
 
-    private final JobNodePath jobNodePath;
-
-    public JobNodeStorage(final CoordinatorRegistryCenter regCenter, final String jobName) {
+    public ZkNodeStorage(final CoordinatorRegistryCenter regCenter, final String rootNode) {
         this.regCenter = regCenter;
-        this.jobName = jobName;
-        jobNodePath = new JobNodePath(jobName);
+        this.rootNode = rootNode;
     }
 
     /**
-     * 判断作业节点是否存在.
+     * 判断节点是否存在.
      *
-     * @param node 作业节点名称
-     * @return 作业节点是否存在
+     * @param node 节点名称
+     * @return 节点是否存在
      */
-    public boolean isJobNodeExisted(final String node) {
-        return regCenter.isExisted(jobNodePath.getFullPath(node));
+    public boolean isNodeExisted(final String node) {
+        return regCenter.isExisted(getFullPath(node));
     }
 
     /**
-     * 获取作业节点数据.
+     * 获取节点数据.
      *
-     * @param node 作业节点名称
-     * @return 作业节点数据值
+     * @param node 节点名称
+     * @return 节点数据值
      */
-    public String getJobNodeData(final String node) {
-        return regCenter.get(jobNodePath.getFullPath(node));
+    public String getNodeData(final String node) {
+        return regCenter.get(getFullPath(node));
     }
 
     /**
-     * 直接从注册中心而非本地缓存获取作业节点数据.
+     * 直接从注册中心而非本地缓存获取节点数据.
      *
-     * @param node 作业节点名称
-     * @return 作业节点数据值
+     * @param node 节点名称
+     * @return 节点数据值
      */
-    public String getJobNodeDataDirectly(final String node) {
-        return regCenter.getDirectly(jobNodePath.getFullPath(node));
+    public String getNodeDataDirectly(final String node) {
+        return regCenter.getDirectly(getFullPath(node));
     }
 
     /**
-     * 获取作业节点子节点名称列表.
+     * 获取节点子节点名称列表.
      *
-     * @param node 作业节点名称
-     * @return 作业节点子节点名称列表
+     * @param node 节点名称
+     * @return 节点子节点名称列表
      */
-    public List<String> getJobNodeChildrenKeys(final String node) {
-        return regCenter.getChildrenKeys(jobNodePath.getFullPath(node));
+    public List<String> getNodeChildrenKeys(final String node) {
+        return regCenter.getChildrenKeys(getFullPath(node));
     }
 
     /**
-     * 如果存在则创建作业节点.
+     * 如果存在则创建节点.
      *
-     * <p>如果作业根节点不存在表示作业已经停止, 不再继续创建节点.</p>
+     * <p>如果根节点不存在表示已经停止, 不再继续创建节点.</p>
      *
-     * @param node 作业节点名称
+     * @param node 节点名称
      */
-    public void createJobNodeIfNeeded(final String node) {
-        if (isJobRootNodeExisted() && !isJobNodeExisted(node)) {
-            regCenter.persist(jobNodePath.getFullPath(node), "");
+    public void createNodeIfNeeded(final String node) {
+        if (isRootNodeExisted() && !isNodeExisted(node)) {
+            regCenter.persist(getFullPath(node), "");
         }
     }
 
-    private boolean isJobRootNodeExisted() {
-        return regCenter.isExisted("/" + jobName);
+    private boolean isRootNodeExisted() {
+        return regCenter.isExisted("/" + rootNode);
     }
 
     /**
-     * 删除作业节点.
+     * 删除节点.
      *
-     * @param node 作业节点名称
+     * @param node 节点名称
      */
-    public void removeJobNodeIfExisted(final String node) {
-        if (isJobNodeExisted(node)) {
-            regCenter.remove(jobNodePath.getFullPath(node));
+    public void removeNodeIfExisted(final String node) {
+        if (isNodeExisted(node)) {
+            regCenter.remove(getFullPath(node));
         }
     }
 
     /**
      * 填充节点数据.
      *
-     * @param node 作业节点名称
-     * @param value 作业节点数据值
+     * @param node 节点名称
+     * @param value 节点数据值
      */
-    public void fillJobNode(final String node, final Object value) {
-        regCenter.persist(jobNodePath.getFullPath(node), value.toString());
+    public void fillNode(final String node, final Object value) {
+        regCenter.persist(getFullPath(node), value.toString());
     }
 
     /**
      * 填充临时节点数据.
      *
-     * @param node 作业节点名称
-     * @param value 作业节点数据值
+     * @param node 节点名称
+     * @param value 节点数据值
      */
-    public void fillEphemeralJobNode(final String node, final Object value) {
-        regCenter.persistEphemeral(jobNodePath.getFullPath(node), value.toString());
+    public void fillEphemeralNode(final String node, final Object value) {
+        regCenter.persistEphemeral(getFullPath(node), value.toString());
     }
 
     /**
      * 更新节点数据.
      *
-     * @param node 作业节点名称
-     * @param value 作业节点数据值
+     * @param node 节点名称
+     * @param value 节点数据值
      */
-    public void updateJobNode(final String node, final Object value) {
-        regCenter.update(jobNodePath.getFullPath(node), value.toString());
+    public void updateNode(final String node, final Object value) {
+        regCenter.update(getFullPath(node), value.toString());
     }
 
     /**
-     * 替换作业节点数据.
+     * 替换节点数据.
      *
-     * @param node 作业节点名称
+     * @param node 节点名称
      * @param value 待替换的数据
      */
-    public void replaceJobNode(final String node, final Object value) {
-        regCenter.persist(jobNodePath.getFullPath(node), value.toString());
+    public void replaceNode(final String node, final Object value) {
+        regCenter.persist(getFullPath(node), value.toString());
     }
 
     /**
@@ -179,11 +175,11 @@ public final class JobNodeStorage {
     /**
      * 在主节点执行操作.
      *
-     * @param latchNode 分布式锁使用的作业节点名称
+     * @param latchNode 分布式锁使用的节点名称
      * @param callback 执行操作的回调
      */
     public void executeInLeader(final String latchNode, final LeaderExecutionCallback callback) {
-        try (LeaderLatch latch = new LeaderLatch(getClient(), jobNodePath.getFullPath(latchNode))) {
+        try (LeaderLatch latch = new LeaderLatch(getClient(), getFullPath(latchNode))) {
             latch.start();
             latch.await();
             callback.execute();
@@ -221,7 +217,7 @@ public final class JobNodeStorage {
      * @param listener 数据监听器
      */
     public void addDataListener(final TreeCacheListener listener) {
-        TreeCache cache = (TreeCache) regCenter.getRawCache("/" + jobName);
+        TreeCache cache = (TreeCache) regCenter.getRawCache("/" + rootNode);
         cache.getListenable().addListener(listener);
     }
 
@@ -231,6 +227,11 @@ public final class JobNodeStorage {
      * @return 注册中心当前时间
      */
     public long getRegistryCenterTime() {
-        return regCenter.getRegistryCenterTime(jobNodePath.getFullPath("systemTime/current"));
+        return regCenter.getRegistryCenterTime(getFullPath("systemTime/current"));
+    }
+
+
+    public String getFullPath(final String node) {
+        return String.format("/%s/%s", rootNode, node);
     }
 }
