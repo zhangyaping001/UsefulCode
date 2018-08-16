@@ -9,6 +9,8 @@
     <modules>
         <module>zk-curator</module>
         <module>event-bus</module>
+        <module>BuilderPattern</module>
+        <module>singleton</module>
     </modules>
     <packaging>pom</packaging>
 
