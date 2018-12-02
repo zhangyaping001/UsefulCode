@@ -11,6 +11,7 @@
         <module>event-bus</module>
         <module>BuilderPattern</module>
         <module>singleton</module>
+        <module>DecoratorPattern</module>
     </modules>
     <packaging>pom</packaging>
 
