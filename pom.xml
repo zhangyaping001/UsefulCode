@@ -12,6 +12,7 @@
         <module>BuilderPattern</module>
         <module>singleton</module>
         <module>DecoratorPattern</module>
+        <module>concurrency-demo</module>
     </modules>
     <packaging>pom</packaging>
 
