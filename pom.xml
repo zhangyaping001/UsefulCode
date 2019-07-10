@@ -14,6 +14,8 @@
         <module>DecoratorPattern</module>
         <module>concurrency-demo</module>
         <module>Jvmtest</module>
+        <module>id-gen</module>
+        <module>java-spi</module>
     </modules>
     <packaging>pom</packaging>
 
